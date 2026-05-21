@@ -1,0 +1,62 @@
+### Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+### Logs
+logs
+*.log
+*.log.*
+
+### Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+### Dependency directories (project & subprojects)
+/client/node_modules/
+/server/node_modules/
+
+### Build outputs
+dist/
+build/
+/client/dist/
+/client/build/
+
+### Vite
+/.vite
+
+### Environment variables
+.env
+.env.local
+.env.*
+!.env.example
+
+### Coverage
+coverage/
+.nyc_output/
+
+### Caches
+.cache/
+.parcel-cache/
+
+### OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+### IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+### Misc
+*.tgz
+*.bak
+*.tmp
