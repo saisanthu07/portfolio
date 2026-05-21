@@ -6,6 +6,38 @@
       // Early suppression for noisy browser extension errors injected as regular scripts.
       // This runs before other app scripts so extension-origin errors are ignored early.
       (function () {
+        // Also proactively remove/ignore <script> elements injected by extensions (chrome-extension://)
+        function removeExtensionScripts(node) {
+          try {
+            if (!node) return
+            var scripts = node.querySelectorAll ? node.querySelectorAll('script[src]') : []
+            scripts.forEach(function (s) {
+              try {
+                if (s.src && s.src.indexOf('chrome-extension://') === 0) {
+                  s.parentNode && s.parentNode.removeChild(s)
+                }
+              } catch (err) {}
+            })
+          } catch (err) {}
+        }
+
+        // initial sweep
+        try { removeExtensionScripts(document); } catch (err) {}
+
+        // observe future additions and remove any extension scripts immediately
+        try {
+          var mo = new MutationObserver(function (mutations) {
+            mutations.forEach(function (m) {
+              if (m.addedNodes && m.addedNodes.length) {
+                m.addedNodes.forEach(function (n) {
+                  try { removeExtensionScripts(n) } catch (err) {}
+                })
+              }
+            })
+          })
+          mo.observe(document.documentElement || document, { childList: true, subtree: true })
+        } catch (err) {}
+
         try {
           window.addEventListener('error', function (e) {
             if (e && e.filename && e.filename.indexOf('chrome-extension://') === 0) {
