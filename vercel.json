@@ -2,12 +2,6 @@
   "version": 2,
   "buildCommand": "npm install --prefix client && npm run build --prefix client",
   "outputDirectory": "client/dist",
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
