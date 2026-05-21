@@ -24,12 +24,12 @@ const projects = [
   },
   {
     id: '02',
-    title: 'Portfolio API',
-    tagline: 'Serverless Contact & Health Backend',
-    category: 'backend',
+    title: 'Portfolio',
+    tagline: 'Personal Portfolio Website',
+    category: 'fullstack',
     live: true,
     liveUrl: 'https://saisanthoshborra.vercel.app/',
-    githubUrl: 'https://github.com/saisanthu07',
+    githubUrl: 'https://github.com/saisanthu07/portfolio',
     stack: ['Node.js', 'Vercel Serverless', 'MongoDB Atlas', 'Nodemailer', 'Rate Limiting'],
     description:
       'Production serverless API powering this portfolio\'s contact form. Features in-memory rate limiting, rich HTML email notifications to both portfolio owner and sender, MongoDB Atlas persistence, and admin-protected submission viewer.',
