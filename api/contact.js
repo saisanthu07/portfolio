@@ -79,10 +79,12 @@ module.exports = async (req, res) => {
       ip: clientIp,
     })
 
-    // Fire-and-forget — don't fail the response if email fails
-    sendNotificationEmail(contact).catch(err =>
+    // Await email sending on serverless so Vercel does not freeze/abort the function mid-send
+    try {
+      await sendNotificationEmail(contact)
+    } catch (err) {
       console.error('Email notification failed:', err.message)
-    )
+    }
 
     console.log(`📩 New contact from ${name} <${email}>`)
 
