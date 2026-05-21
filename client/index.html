@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <script>
-      // Early suppression for noisy browser extension errors injected as regular scripts.
-      // This runs before other app scripts so extension-origin errors are ignored early.
       (function () {
-        // Also proactively remove/ignore <script> elements injected by extensions (chrome-extension://)
         function removeExtensionScripts(node) {
           try {
             if (!node) return
@@ -20,11 +17,7 @@
             })
           } catch (err) {}
         }
-
-        // initial sweep
         try { removeExtensionScripts(document); } catch (err) {}
-
-        // observe future additions and remove any extension scripts immediately
         try {
           var mo = new MutationObserver(function (mutations) {
             mutations.forEach(function (m) {
@@ -37,7 +30,6 @@
           })
           mo.observe(document.documentElement || document, { childList: true, subtree: true })
         } catch (err) {}
-
         try {
           window.addEventListener('error', function (e) {
             if (e && e.filename && e.filename.indexOf('chrome-extension://') === 0) {
@@ -45,7 +37,6 @@
               return true
             }
           })
-
           window.addEventListener('unhandledrejection', function (ev) {
             try {
               var reason = ev && ev.reason
@@ -62,11 +53,30 @@
     <link rel="icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Borra Sai Santhosh — Full Stack Developer</title>
-    <meta name="description" content="Full Stack Developer specializing in MERN Stack and AWS Cloud. Building scalable, production-ready applications." />
+
+    <!-- Primary Meta -->
+    <title>Borra Sai Santhosh — Full Stack Developer & AWS Cloud Engineer</title>
+    <meta name="description" content="Full Stack Developer specializing in MERN Stack and AWS Cloud. Building scalable, production-ready applications. CSE (AI) student at Parul University." />
+    <meta name="keywords" content="Sai Santhosh Borra, Full Stack Developer, MERN Stack, AWS, React, Node.js, MongoDB, Portfolio" />
+    <meta name="author" content="Borra Sai Santhosh" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Borra Sai Santhosh — Full Stack Developer & AWS Cloud Engineer" />
+    <meta property="og:description" content="Full Stack Developer specializing in MERN Stack and AWS Cloud. Building scalable, production-ready applications." />
+    <meta property="og:url" content="https://saisanthosh.dev" />
+    <meta property="og:site_name" content="Sai Santhosh Portfolio" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Borra Sai Santhosh — Full Stack Developer" />
+    <meta name="twitter:description" content="Full Stack Developer | MERN Stack | AWS Certified | Building things that actually ship." />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>

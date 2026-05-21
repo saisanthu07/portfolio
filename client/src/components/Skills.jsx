@@ -4,37 +4,51 @@ const categories = [
   {
     icon: '⚡',
     name: 'Languages',
-    skills: ['JavaScript (ES2022+)', 'Python', 'SQL', 'JAVA'],
+    color: '#ffb347',
+    span: 'wide',
+    skills: ['JavaScript (ES2022+)', 'Python', 'SQL', 'Java'],
   },
   {
     icon: '🧩',
     name: 'Frameworks & Libraries',
+    color: '#00d4ff',
+    span: 'wide',
     skills: ['React.js', 'Node.js', 'Express.js', 'Socket.io', 'WebSockets'],
-  },
-  {
-    icon: '🤖',
-    name: 'AI',
-    skills: ['AI API Integration'],
   },
   {
     icon: '🗄️',
     name: 'Databases',
-    skills: ['MongoDB (NoSQL)', 'MySQL', 'MongoDB Atlas'],
+    color: '#00ff88',
+    span: 'normal',
+    skills: ['MongoDB', 'MongoDB Atlas', 'MySQL'],
   },
   {
     icon: '☁️',
-    name: 'Cloud (AWS)',
-    skills: ['EC2', 'S3', 'CloudFront', 'Lambda', 'IAM', 'CloudWatch', 'Route 53'],
+    name: 'Cloud — AWS',
+    color: '#ff9f43',
+    span: 'normal',
+    skills: ['EC2', 'S3', 'CloudFront', 'Lambda', 'API Gateway', 'IAM', 'Route 53', 'CloudWatch'],
   },
   {
     icon: '🔐',
     name: 'Auth & Security',
-    skills: ['Clerk Auth', 'JWT', 'bcrypt', 'CORS', 'HTTPS', 'Role-Based Access Control'],
+    color: '#7b2fff',
+    span: 'normal',
+    skills: ['Clerk Auth', 'JWT', 'bcrypt', 'RBAC', 'CORS', 'HTTPS'],
   },
   {
     icon: '🛠️',
-    name: 'Tools',
-    skills: ['Git & GitHub', 'GitHub Actions','Vercel', 'Render', 'Postman', 'Cloudinary'],
+    name: 'Tools & Platforms',
+    color: '#00d4ff',
+    span: 'normal',
+    skills: ['Git', 'GitHub', 'Vercel', 'Render', 'Postman', 'Cloudinary', 'GitHub Actions'],
+  },
+  {
+    icon: '🤖',
+    name: 'AI Integration',
+    color: '#ff6b6b',
+    span: 'normal',
+    skills: ['AI API Integration', 'Prompt Engineering'],
   },
 ]
 
@@ -47,19 +61,38 @@ export default function Skills() {
         <p className="section-label">Technical Skills</p>
         <h2 className="section-title">What I work with</h2>
 
-        <div className="skills-grid">
+        <div className="skills-bento">
           {categories.map((cat, i) => (
             <div
-              className={`skill-category fade-in delay-${Math.min(i + 1, 5)}${visible ? ' visible' : ''}`}
+              className={`skill-card skill-card--${cat.span} fade-in delay-${Math.min(i + 1, 5)}${visible ? ' visible' : ''}`}
               key={cat.name}
+              style={{ '--cat-color': cat.color }}
+              onMouseMove={e => {
+                const el = e.currentTarget
+                const rect = el.getBoundingClientRect()
+                el.style.setProperty('--mx', `${e.clientX - rect.left}px`)
+                el.style.setProperty('--my', `${e.clientY - rect.top}px`)
+              }}
             >
-              <div className="skill-category-header">
-                <div className="skill-category-icon">{cat.icon}</div>
-                <div className="skill-category-name">{cat.name}</div>
+              <div className="skill-card__spotlight" aria-hidden="true" />
+              <div className="skill-card__header">
+                <span
+                  className="skill-card__icon"
+                  style={{ background: `${cat.color}15`, borderColor: `${cat.color}35` }}
+                >
+                  {cat.icon}
+                </span>
+                <span className="skill-card__name">{cat.name}</span>
               </div>
-              <div className="skill-tags">
-                {cat.skills.map(s => (
-                  <span className="skill-tag" key={s}>{s}</span>
+              <div className="skill-card__tags">
+                {cat.skills.map(skill => (
+                  <span
+                    className="skill-pill"
+                    key={skill}
+                    style={{ '--pill-color': cat.color }}
+                  >
+                    {skill}
+                  </span>
                 ))}
               </div>
             </div>
