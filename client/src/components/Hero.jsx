@@ -139,9 +139,6 @@ export default function Hero() {
               <div className="hpc-inner">
                 <img src="/profile.jpg" className="hpc-img" alt="Borra Sai Santhosh" />
                 <div className="hpc-glow" />
-                <div className="hpc-decor">
-                  <span className="hpc-badge">CSE (AI) Student</span>
-                </div>
               </div>
             </div>
           </div>
