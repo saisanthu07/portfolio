@@ -77,16 +77,6 @@ export default function About() {
             </div>
           </div>
 
-          <div className={`about-profile fade-in delay-1${visible ? ' visible' : ''}`}>
-            <div className="about-profile-inner">
-              <img src="/profile.jpg" className="about-profile-img" alt="Borra Sai Santhosh" />
-              <div className="about-profile-glow" />
-              <div className="about-profile-overlay">
-                <span className="ap-badge">CSE (AI) Student</span>
-              </div>
-            </div>
-          </div>
-
           <div className={`about-stats fade-in delay-2${visible ? ' visible' : ''}`}>
             {stats.map(s => (
               <StatCard key={s.label} stat={s} animStart={animStart} />
