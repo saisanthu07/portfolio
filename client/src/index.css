@@ -1047,6 +1047,15 @@ section {
   filter: drop-shadow(0 0 20px var(--accent, var(--accent-cyan)));
   animation: iconFloat 4s ease-in-out infinite;
 }
+.project-visual-img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 20px var(--accent, var(--accent-cyan)));
+  animation: iconFloat 4s ease-in-out infinite;
+}
 @keyframes iconFloat {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }

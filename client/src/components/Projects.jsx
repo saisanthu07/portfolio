@@ -19,7 +19,7 @@ const projects = [
       'Integrated Clerk for secure authentication with session-based access control and protected routes across the full-stack application.',
       'Deployed on AWS EC2 with S3 static asset hosting and CloudFront CDN for global distribution.',
     ],
-    emoji: '💻',
+    image: '/codesuu-logo.png',
     accent: '#00d4ff',
   },
   {
@@ -28,7 +28,7 @@ const projects = [
     tagline: 'Serverless Contact & Health Backend',
     category: 'backend',
     live: true,
-    liveUrl: null,
+    liveUrl: 'https://saisanthoshborra.vercel.app/',
     githubUrl: 'https://github.com/saisanthu07',
     stack: ['Node.js', 'Vercel Serverless', 'MongoDB Atlas', 'Nodemailer', 'Rate Limiting'],
     description:
@@ -133,7 +133,11 @@ export default function Projects() {
 
               <div className="project-visual" aria-hidden="true">
                 <div className="project-visual-inner">
-                  <div className="project-visual-icon">{p.emoji}</div>
+                  {p.image ? (
+                    <img src={p.image} className="project-visual-img" alt={`${p.title} Logo`} />
+                  ) : (
+                    <div className="project-visual-icon">{p.emoji}</div>
+                  )}
                   <div className="project-visual-glow" />
                   <div className="project-visual-rings">
                     <div className="pvr pvr-1" />
