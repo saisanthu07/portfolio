@@ -17,7 +17,6 @@ const projects = [
       'Architected per-session isolated sandbox environments across a multi-tenant architecture, eliminating cross-session data leakage and supporting 10+ concurrent coding rooms.',
       'Implemented host-controlled session management with real-time participant tracking and room lifecycle handling — reducing session conflict rate by ~60%.',
       'Integrated Clerk for secure authentication with session-based access control and protected routes across the full-stack application.',
-      'Deployed on AWS EC2 with S3 static asset hosting and CloudFront CDN for global distribution.',
     ],
     image: '/codesuu-logo.png',
     accent: '#00d4ff',
