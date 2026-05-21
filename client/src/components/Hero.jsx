@@ -97,7 +97,7 @@ export default function Hero() {
 
             <p className="hero-summary">
               Computer Science (AI) student building production-ready full-stack applications
-              with the MERN stack. AWS certified with hands-on deployment experience on EC2,
+              with the MERN stack. AWS hands-on deployment experience on EC2,
               S3, CloudFront, and Lambda. I turn complex problems into clean, scalable systems.
             </p>
 

@@ -95,7 +95,7 @@ async function sendNotificationEmail(contact) {
           <p style="color: #555570; font-size: 14px; margin: 0;">
             Best,<br />
             <strong style="color: #f0f0f8;">Sai Santhosh Borra</strong><br />
-            <span style="color: #00d4ff; font-family: monospace; font-size: 12px;">Full Stack Developer · AWS Certified</span>
+            <span style="color: #00d4ff; font-family: monospace; font-size: 12px;">Full Stack Developer · AWS</span>
           </p>
         </div>
       </div>
