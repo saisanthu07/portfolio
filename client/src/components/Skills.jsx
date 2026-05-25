@@ -6,7 +6,7 @@ const categories = [
     name: 'Languages',
     color: '#ff9f0a', // iOS Orange
     span: 'wide',
-    skills: ['JavaScript (ES2022+)', 'Python', 'SQL', 'Java'],
+    skills: ['JavaScript', 'Python', 'SQL', 'Java'],
   },
   {
     icon: '🧩',
