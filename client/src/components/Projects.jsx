@@ -10,7 +10,7 @@ const projects = [
     live: true,
     liveUrl: 'https://codesuu.tech/',
     githubUrl: 'https://github.com/saisanthu07',
-    stack: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'WebSockets', 'Clerk Auth', 'AWS EC2'],
+    stack: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'WebSockets', 'Clerk Auth'],
     description:
       'A production-grade real-time collaborative coding platform with multi-tenant session isolation, host-controlled RBAC, and WebSocket-based synchronization. Built and shipped in 4 months.',
     bullets: [
