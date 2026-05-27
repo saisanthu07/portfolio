@@ -45,6 +45,7 @@ const educationData = [
 
 export default function Education() {
   const [ref, visible] = useFadeIn()
+  const [isPaused, setIsPaused] = useState(false)
   const initialIndex = educationData.findIndex(edu => {
     const deg = (edu.degree || '').toLowerCase()
     const inst = (edu.institution || '').toLowerCase()
@@ -54,11 +55,13 @@ export default function Education() {
   const total = educationData.length
 
   useEffect(() => {
+    if (isPaused) return
+
     const t = setInterval(() => {
       setCurrent(c => (c + 1) % total)
     }, 6000)
     return () => clearInterval(t)
-  }, [total])
+  }, [isPaused, total])
 
   function prev() { setCurrent(c => (c - 1 + total) % total) }
   function next() { setCurrent(c => (c + 1) % total) }
@@ -70,7 +73,12 @@ export default function Education() {
         <p className="section-label">My Academic Journey</p>
         <h2 className="section-title">Education</h2>
 
-        <div className={`edu-stepper fade-in${visible ? ' visible' : ''}`} aria-roledescription="carousel">
+        <div
+          className={`edu-stepper fade-in${visible ? ' visible' : ''}`}
+          aria-roledescription="carousel"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           <div className="edu-points" role="tablist" aria-label="Education steps">
             {educationData.map((edu, i) => (
               <button
