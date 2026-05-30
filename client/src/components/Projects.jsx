@@ -40,6 +40,25 @@ const projects = [
     emoji: '⚡',
     accent: '#7b2fff',
   },
+  {
+    id: '03',
+    title: 'ShikshaBridge',
+    tagline: 'AI-Powered School Learning Platform',
+    category: 'fullstack',
+    live: true,
+    liveUrl: 'https://shikshabridge.vercel.app',
+    githubUrl: 'https://github.com/saisanthu07',
+    stack: ['MongoDB', 'Express.js', 'React.js', 'Node.js', 'NVIDIA NIM'],
+    description:
+      'Collaborated in a team of 2 to build a 3-role EdTech platform (Admin/Teacher/Student) for government schools in India with AI-driven learning gap analysis powered by NVIDIA NIM (LLaMA 3.1).',
+    bullets: [
+      'Engineered a rule-based recommendation engine with concept mastery tracking to auto-assign personalized remedial tasks based on quiz performance.',
+      'Implemented role-based flows for Admin, Teacher, and Student to manage assessments, learning insights, and targeted interventions.',
+      'Secured the platform with JWT auth, RBAC, Helmet.js, rate limiting, and NoSQL injection prevention.',
+    ],
+    emoji: '🎓',
+    accent: '#10b981',
+  },
 ]
 
 const FILTERS = [
