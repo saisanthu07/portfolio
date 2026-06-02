@@ -2,6 +2,15 @@ import { useFadeIn } from '../hooks/useFadeIn'
 
 const certs = [
   {
+    title: 'CRUD Operations in MongoDB',
+    issuer: 'MongoDB',
+    date: 'June 2026',
+    url: 'https://www.credly.com/badges/a427cb18-e63d-4a84-a994-0cf0945a8bea/public_url',
+    badge: '🍀',
+    accent: '#089d55',
+    desc: 'Hands-on MongoDB CRUD operations, document modeling, query basics, and working with collections in real-world applications.',
+  },
+  {
     title: 'AWS Academy Cloud Foundations',
     issuer: 'Amazon Web Services',
     date: 'Feb 2026',
@@ -46,15 +55,6 @@ const certs = [
     accent: '#2f855a',
     desc: 'Completed the Git - Skill Up program in recognition of dedication, consistency, and successful course completion.',
   },
-  {
-    title: 'CRUD Operations in MongoDB',
-    issuer: 'MongoDB',
-    date: 'June 2026',
-    url: 'https://www.credly.com/badges/a427cb18-e63d-4a84-a994-0cf0945a8bea/public_url',
-    badge: '🍀',
-    accent: '#089d55',
-    desc: 'Hands-on MongoDB CRUD operations, document modeling, query basics, and working with collections in real-world applications.',
-  },
 ]
 
 const community = [
@@ -84,7 +84,7 @@ export default function Certifications() {
         <div className={`certs-grid fade-in${visible ? ' visible' : ''}`}>
           {certs.map((c, i) => (
             <div
-              className={`cert-card fade-in delay-${i + 1}${visible ? ' visible' : ''}`}
+              className={`cert-card fade-in delay-${i + 1}${visible ? ' visible' : ''}${i === 0 ? ' cert-card--top' : i === 1 ? ' cert-card--second' : ''}`}
               key={c.title}
               style={{ '--cert-accent': c.accent }}
             >
