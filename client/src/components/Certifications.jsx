@@ -82,39 +82,50 @@ export default function Certifications() {
         <h2 className="section-title">Certifications</h2>
 
         <div className={`certs-grid fade-in${visible ? ' visible' : ''}`}>
-          {certs.map((c, i) => (
-            <div
-              className={`cert-card fade-in delay-${i + 1}${visible ? ' visible' : ''}${i === 0 ? ' cert-card--top' : i === 1 ? ' cert-card--second' : ''}`}
-              key={c.title}
-              style={{ '--cert-accent': c.accent }}
-            >
-              <div className="cert-badge-row">
-                <div className="cert-badge-icon" style={{ background: `${c.accent}18`, borderColor: `${c.accent}40` }}>
-                  {c.badge}
+          {certs.map((c, i) => {
+            const cardClasses = [
+              'cert-card',
+              'fade-in',
+              `delay-${i + 1}`,
+              visible && 'visible',
+              i === 0 && 'cert-card--top',
+              i === 1 && 'cert-card--second',
+            ].filter(Boolean).join(' ')
+
+            return (
+              <div
+                className={cardClasses}
+                key={c.title}
+                style={{ '--cert-accent': c.accent }}
+              >
+                <div className="cert-badge-row">
+                  <div className="cert-badge-icon" style={{ background: `${c.accent}18`, borderColor: `${c.accent}40` }}>
+                    {c.badge}
+                  </div>
+                  <div className="cert-issuer-badge" style={{ color: c.accent, background: `${c.accent}12`, borderColor: `${c.accent}30` }}>
+                    {c.issuer}
+                  </div>
                 </div>
-                <div className="cert-issuer-badge" style={{ color: c.accent, background: `${c.accent}12`, borderColor: `${c.accent}30` }}>
-                  {c.issuer}
+                <div className="cert-title">{c.title}</div>
+                <p className="cert-desc">{c.desc}</p>
+                <div className="cert-footer">
+                  <div className="cert-meta">Issued {c.date}</div>
+                  {c.url && (
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cert-link"
+                      id={`cert-badge-${i}`}
+                    >
+                      View Badge
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                  )}
                 </div>
               </div>
-              <div className="cert-title">{c.title}</div>
-              <p className="cert-desc">{c.desc}</p>
-              <div className="cert-footer">
-                <div className="cert-meta">Issued {c.date}</div>
-                {c.url && (
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cert-link"
-                    id={`cert-badge-${i}`}
-                  >
-                    View Badge
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         <p className="section-label" style={{ marginTop: 72 }}>Community</p>
