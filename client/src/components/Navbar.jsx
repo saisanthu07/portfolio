@@ -23,18 +23,26 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    const observers = []
-    sectionIds.forEach(id => {
-      const el = document.getElementById(id)
-      if (!el) return
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id) },
-        { threshold: 0.35 }
-      )
-      obs.observe(el)
-      observers.push(obs)
-    })
-    return () => observers.forEach(o => o.disconnect())
+    const updateActiveSection = () => {
+      const navbarOffset = document.querySelector('.navbar')?.offsetHeight || 0
+      const scrollPosition = window.scrollY + navbarOffset + 24
+
+      const current = sectionIds.reduce((active, id) => {
+        const el = document.getElementById(id)
+        if (!el) return active
+        return el.offsetTop <= scrollPosition ? id : active
+      }, 'hero')
+
+      setActiveSection(current)
+    }
+
+    updateActiveSection()
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('resize', updateActiveSection)
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('resize', updateActiveSection)
+    }
   }, [])
 
   const handleNav = (e, href) => {
