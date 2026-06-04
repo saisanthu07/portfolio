@@ -859,6 +859,67 @@ section {
   line-height: 1.4;
 }
 
+/* About Profile Visual */
+.about-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.about-profile-card {
+  width: 100%;
+  max-width: 320px;
+  position: relative;
+}
+.apc-inner {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  transition: all var(--transition);
+  animation: profileFloat 6s ease-in-out infinite;
+}
+.apc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), transparent, rgba(10, 132, 255, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;
+}
+.apc-inner:hover {
+  border-color: var(--accent-blue);
+  box-shadow: 0 40px 80px rgba(10, 132, 255, 0.15);
+}
+.apc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--transition);
+  filter: grayscale(8%) contrast(100%);
+}
+.apc-inner:hover .apc-img {
+  transform: scale(1.03);
+  filter: grayscale(0%) contrast(100%);
+}
+.apc-glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 60%);
+  z-index: 1;
+}
+
 @media (max-width: 768px) {
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
 }

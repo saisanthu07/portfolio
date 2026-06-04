@@ -1,43 +1,7 @@
-import { useState, useEffect } from 'react'
 import { useFadeIn } from '../hooks/useFadeIn'
-
-const stats = [
-  { number: 1, suffix: '+', label: 'Production Apps', icon: '🚀' },
-  { number: 2, suffix: '+', label: 'AWS Certifications', icon: '☁️' },
-]
-
-function useCountUp(target, duration = 1800, start = false) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    if (!start) return
-    let startTime = null
-    const step = timestamp => {
-      if (!startTime) startTime = timestamp
-      const progress = Math.min((timestamp - startTime) / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.floor(eased * target))
-      if (progress < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
-  }, [target, duration, start])
-  return count
-}
-
-function StatCard({ stat, animStart }) {
-  const count = useCountUp(stat.number, 1600, animStart)
-  return (
-    <div className="stat-card">
-      <div className="stat-icon">{stat.icon}</div>
-      <div className="stat-number">{count}{stat.suffix}</div>
-      <div className="stat-label">{stat.label}</div>
-    </div>
-  )
-}
 
 export default function About() {
   const [ref, visible] = useFadeIn()
-  const [animStart, setAnimStart] = useState(false)
-  useEffect(() => { if (visible) setAnimStart(true) }, [visible])
 
   return (
     <section id="about" ref={ref}>
@@ -75,10 +39,13 @@ export default function About() {
             </div>
           </div>
 
-          <div className={`about-stats fade-in delay-2${visible ? ' visible' : ''}`}>
-            {stats.map(s => (
-              <StatCard key={s.label} stat={s} animStart={animStart} />
-            ))}
+          <div className={`about-image fade-in delay-2${visible ? ' visible' : ''}`}>
+            <div className="about-profile-card">
+              <div className="apc-inner">
+                <img src="/profile_about.jpg" className="apc-img" alt="Borra Sai Santhosh" />
+                <div className="apc-glow" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
