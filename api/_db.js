@@ -7,6 +7,14 @@ if (!global._mongo) {
   global._mongo = { conn: null, promise: null }
 }
 
+/**
+ * Establishes or retrieves a cached connection to MongoDB using Mongoose.
+ * Uses global caching to prevent multiple active connections in serverless environments.
+ *
+ * @async
+ * @returns {Promise<typeof mongoose>} A promise resolving to the Mongoose client instance.
+ * @throws {Error} Throws connection error if MONGODB_URI is set but database connection fails.
+ */
 async function connect() {
   // If no URI provided, skip connecting (useful for static deployments or when DB isn't configured).
   if (!MONGODB_URI) {

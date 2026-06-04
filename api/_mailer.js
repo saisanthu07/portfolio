@@ -1,5 +1,10 @@
 const nodemailer = require('nodemailer')
 
+/**
+ * Creates and configures a Nodemailer transporter instance configured for Gmail.
+ *
+ * @returns {import('nodemailer').Transporter} The configured Nodemailer transporter instance.
+ */
 const createTransporter = () => nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -8,6 +13,19 @@ const createTransporter = () => nodemailer.createTransport({
   },
 })
 
+/**
+ * Sends notification emails using Nodemailer. 
+ * Sends a notification of a new contact submission to the portfolio owner, 
+ * and sends a confirmation/thank-you auto-reply to the contact sender.
+ *
+ * @async
+ * @param {object} contact - The contact object stored in the database.
+ * @param {string} contact.name - The name of the sender.
+ * @param {string} contact.email - The email address of the sender.
+ * @param {string} contact.subject - The subject of the message.
+ * @param {string} contact.message - The content of the message.
+ * @returns {Promise<void>} Resolves when mail transactions are finished.
+ */
 async function sendNotificationEmail(contact) {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     console.log('📧 Email skipped — SMTP credentials not configured')

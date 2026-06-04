@@ -56,6 +56,15 @@ const contactLimiter = rateLimit({
 })
 
 // Helper: safe timing comparison to prevent timing side-channel attacks
+/**
+ * Performs a timing-safe string comparison to protect against side-channel timing attacks.
+ * It hashes both the input string and the secret string with SHA-256 before running
+ * the timingSafeEqual comparison.
+ *
+ * @param {string} input - The input string (e.g. admin key header).
+ * @param {string} secret - The expected secret string from environment variables.
+ * @returns {boolean} True if the hashes match timing-safely, false otherwise.
+ */
 function timingSafeCompare(input, secret) {
   if (!secret || secret.length < 8) return false
   if (typeof input !== 'string') return false
@@ -66,6 +75,13 @@ function timingSafeCompare(input, secret) {
   return crypto.timingSafeEqual(inputHash, secretHash)
 }
 
+/**
+ * Sanitizes input text to prevent cross-site scripting (XSS) and database HTML injection attacks.
+ *
+ * @param {string} str - The raw input string.
+ * @param {number} [maxLength=2000] - The maximum string length allowed.
+ * @returns {string} The escaped and truncated output string.
+ */
 function sanitizeInput(str, maxLength = 2000) {
   if (typeof str !== 'string') return ''
   return str.trim()
@@ -97,6 +113,11 @@ const ContactSchema = new mongoose.Schema({
 const Contact = mongoose.models.Contact || mongoose.model('Contact', ContactSchema)
 
 // ─── Nodemailer ────────────────────────────────────────────────────────────────
+/**
+ * Configures and returns a Nodemailer transporter instance for sending emails through Gmail.
+ *
+ * @returns {import('nodemailer').Transporter} The configured Nodemailer transporter.
+ */
 const createTransporter = () => nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -105,6 +126,14 @@ const createTransporter = () => nodemailer.createTransport({
   },
 })
 
+/**
+ * Sends notification emails. It sends an alert of new contact submission to the administrator,
+ * and sends an automatic confirmation reply to the sender of the contact form.
+ *
+ * @async
+ * @param {object} contact - The Contact MongoDB model instance containing message details.
+ * @returns {Promise<void>} Resolves when the emails have finished sending.
+ */
 async function sendNotificationEmail(contact) {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     console.log('📧 Email skipped — SMTP credentials not configured')

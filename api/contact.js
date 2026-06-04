@@ -7,6 +7,13 @@ const rateLimitMap = new Map()
 const WINDOW_MS = 15 * 60 * 1000 // 15 minutes
 const MAX_REQUESTS = 5
 
+/**
+ * Simple in-memory rate limiter for serverless environment.
+ * Restricts client IP to a maximum of 5 requests within a 15-minute window.
+ *
+ * @param {string} ip - The client IP address.
+ * @returns {boolean} True if the request is within the rate limit, false otherwise.
+ */
 function checkRateLimit(ip) {
   const now = Date.now()
   const key = ip || 'unknown'
@@ -30,6 +37,13 @@ const ALLOWED_ORIGINS = [
   'https://portfolio-saisanthu07s-projects.vercel.app'
 ]
 
+/**
+ * Resolves the correct CORS origin response header value based on the request's origin
+ * header and a preconfigured list of allowed origins.
+ *
+ * @param {import('http').IncomingMessage} req - The HTTP request object.
+ * @returns {string} The allowed origin to return in the response headers.
+ */
 function getCorsOrigin(req) {
   const origin = req.headers.origin
   if (!origin) return 'https://saisanthoshborra.vercel.app'
@@ -38,6 +52,14 @@ function getCorsOrigin(req) {
   return 'https://saisanthoshborra.vercel.app'
 }
 
+/**
+ * Configures the necessary security headers (like HSTS, CSP, CORS headers)
+ * on the serverless HTTP response object.
+ *
+ * @param {import('http').IncomingMessage} req - The HTTP request object.
+ * @param {import('http').ServerResponse} res - The HTTP response object.
+ * @returns {void}
+ */
 function setSecurityHeaders(req, res) {
   const origin = getCorsOrigin(req)
   res.setHeader('Access-Control-Allow-Origin', origin)
@@ -53,6 +75,16 @@ function setSecurityHeaders(req, res) {
   res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; sandbox; base-uri 'none';")
 }
 
+/**
+ * Validates the contact form request body to ensure all fields are correctly formatted
+ * and satisfy schema requirements.
+ *
+ * @param {object} body - The request body object.
+ * @param {string} body.name - The name of the sender.
+ * @param {string} body.email - The email address of the sender.
+ * @param {string} body.message - The contact message content.
+ * @returns {string|null} An error message string if validation fails, or null if validation passes.
+ */
 function validateBody(body) {
   if (!body) return 'Invalid request body'
   const { name, email, message } = body
@@ -64,6 +96,14 @@ function validateBody(body) {
   return null
 }
 
+/**
+ * Sanitizes input string to shield against cross-site scripting (XSS)
+ * and stored HTML/JS injection attacks by escaping critical characters.
+ *
+ * @param {string} str - The raw input string.
+ * @param {number} [maxLength=2000] - The maximum length of string allowed.
+ * @returns {string} The sanitized and truncated string.
+ */
 function sanitizeInput(str, maxLength = 2000) {
   if (typeof str !== 'string') return ''
   return str.trim()
@@ -76,6 +116,16 @@ function sanitizeInput(str, maxLength = 2000) {
     .replace(/\//g, '&#x2F;')
 }
 
+/**
+ * Serverless handler for the contact form API submission endpoint.
+ * Validates the request body, checks rate limits, connects to DB,
+ * creates a contact submission entry, and triggers email notifications.
+ *
+ * @async
+ * @param {import('http').IncomingMessage} req - The HTTP request object.
+ * @param {import('http').ServerResponse} res - The HTTP response object.
+ * @returns {Promise<any>} Resolves when request processing completes.
+ */
 module.exports = async (req, res) => {
   setSecurityHeaders(req, res)
 

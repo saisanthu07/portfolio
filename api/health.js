@@ -1,5 +1,14 @@
 const { connect, mongoose } = require('./_db')
 
+/**
+ * Serverless API handler that checks the health of the application,
+ * specifically verifying the active connection state of the MongoDB database.
+ *
+ * @async
+ * @param {import('http').IncomingMessage} req - The HTTP request object.
+ * @param {import('http').ServerResponse} res - The HTTP response object.
+ * @returns {Promise<void>}
+ */
 module.exports = async (req, res) => {
   try {
     await connect()
