@@ -1,5 +1,12 @@
 import { useFadeIn } from '../hooks/useFadeIn'
 
+/**
+ * About component renders the "About Me" section of the portfolio website.
+ * It displays professional bio details, education info, experience with AWS and fullstack technologies,
+ * and includes links to download the resume and view LinkedIn.
+ *
+ * @returns {React.JSX.Element} The rendered About section.
+ */
 export default function About() {
   const [ref, visible] = useFadeIn()
 

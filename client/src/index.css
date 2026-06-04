@@ -555,38 +555,49 @@ section {
   max-width: 320px;
   position: relative;
 }
-.hpc-inner {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  aspect-ratio: 2.85/4;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-  transition: all var(--transition);
-  animation: profileFloat 6s ease-in-out infinite;
-}
-@keyframes profileFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-.hpc-inner::before {
+.hero-profile-card::before {
   content: '';
   position: absolute;
   inset: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-lg);
-  padding: 1px;
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), transparent, rgba(10, 132, 255, 0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 3;
+  transform: rotate(-2.5deg) scale(0.98);
+  transition: transform var(--transition);
+  z-index: 0;
 }
-.hpc-inner:hover {
-  border-color: var(--accent-blue);
-  box-shadow: 0 40px 80px rgba(10, 132, 255, 0.15);
+.hero-profile-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 132, 255, 0.02);
+  border: 1px solid rgba(10, 132, 255, 0.08);
+  border-radius: var(--radius-lg);
+  transform: rotate(2.5deg) scale(0.98);
+  transition: transform var(--transition);
+  z-index: 0;
+}
+.hpc-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 2.85/4;
+  background: #0d0d11;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition);
+}
+.hero-profile-card:hover::before {
+  transform: rotate(-1deg) scale(0.99);
+}
+.hero-profile-card:hover::after {
+  transform: rotate(1deg) scale(0.99);
+}
+.hero-profile-card:hover .hpc-inner {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 .hpc-img {
   width: 100%;
@@ -594,17 +605,9 @@ section {
   object-fit: cover;
   object-position: center bottom;
   transition: transform var(--transition);
-  filter: grayscale(12%) contrast(101%);
 }
-.hpc-inner:hover .hpc-img {
+.hero-profile-card:hover .hpc-img {
   transform: scale(1.02);
-  filter: grayscale(0%) contrast(100%);
-}
-.hpc-glow {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 60%);
-  z-index: 1;
 }
 .hpc-decor {
   position: absolute;
@@ -630,26 +633,40 @@ section {
 .hero-status {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: rgba(48, 209, 88, 0.08);
-  border: 1px solid rgba(48, 209, 88, 0.2);
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 12px;
-  color: var(--accent-green);
-  margin-bottom: 24px;
+  gap: 10px;
+  padding: 6px 0;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
 }
 .hero-status-dot {
-  width: 6px; height: 6px;
-  background: var(--accent-green);
-  border-radius: 50%;
-  animation: pulseGreen 2s ease-in-out infinite;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  background: rgba(10, 132, 255, 0.08);
+  border: 1px solid rgba(10, 132, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.04);
 }
-@keyframes pulseGreen {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.6); }
-  50% { box-shadow: 0 0 0 5px rgba(48, 209, 88, 0); }
+.hero-status-dot::before {
+  content: 'ACTIVE';
 }
 
 .hero-name {
@@ -866,40 +883,56 @@ section {
   align-items: center;
   position: relative;
   z-index: 2;
+  padding: 10px;
 }
 .about-profile-card {
   width: 100%;
-  max-width: 320px;
+  max-width: 300px;
   position: relative;
 }
-.apc-inner {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  aspect-ratio: 1 / 1;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-  transition: all var(--transition);
-  animation: profileFloat 6s ease-in-out infinite;
-}
-.apc-inner::before {
+.about-profile-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--radius-lg);
-  padding: 1px;
-  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), transparent, rgba(10, 132, 255, 0.2));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 3;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  transform: rotate(-3deg) scale(0.98);
+  transition: transform var(--transition);
+  z-index: 0;
 }
-.apc-inner:hover {
-  border-color: var(--accent-blue);
-  box-shadow: 0 40px 80px rgba(10, 132, 255, 0.15);
+.about-profile-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 132, 255, 0.02);
+  border: 1px solid rgba(10, 132, 255, 0.08);
+  border-radius: 24px;
+  transform: rotate(3deg) scale(0.98);
+  transition: transform var(--transition);
+  z-index: 0;
+}
+.apc-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: #0d0d11;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+  transition: all var(--transition);
+}
+.about-profile-card:hover::before {
+  transform: rotate(-1deg) scale(0.99);
+}
+.about-profile-card:hover::after {
+  transform: rotate(1deg) scale(0.99);
+}
+.about-profile-card:hover .apc-inner {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
 }
 .apc-img {
   width: 100%;
@@ -907,17 +940,9 @@ section {
   object-fit: cover;
   object-position: center;
   transition: transform var(--transition);
-  filter: grayscale(8%) contrast(100%);
 }
-.apc-inner:hover .apc-img {
-  transform: scale(1.03);
-  filter: grayscale(0%) contrast(100%);
-}
-.apc-glow {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 60%);
-  z-index: 1;
+.about-profile-card:hover .apc-img {
+  transform: scale(1.02);
 }
 
 @media (max-width: 768px) {
