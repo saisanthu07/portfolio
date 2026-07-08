@@ -8,7 +8,7 @@ const educationData = [
     degree: 'Bachelor of Engineering & Technology',
     major: 'Computer Science (Artificial Intelligence)',
     duration: '2023 — 2027',
-    grade: '7.25 CGPA',
+    grade: '7.46 CGPA',
     status: 'Pursuing',
     icon: '🎓',
     accent: '#00e5ff',
