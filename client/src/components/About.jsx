@@ -49,7 +49,7 @@ export default function About() {
           <div className={`about-image fade-in delay-2${visible ? ' visible' : ''}`}>
             <div className="about-profile-card">
               <div className="apc-inner">
-                <img src="/profile_about.jpg" className="apc-img" alt="Borra Sai Santhosh" />
+                <img src="/profile_about.jpg" className="apc-img" alt="Borra Sai Santhosh" loading="lazy" />
                 <div className="apc-glow" />
               </div>
             </div>

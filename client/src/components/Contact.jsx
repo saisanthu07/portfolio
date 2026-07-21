@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import { useFadeIn } from '../hooks/useFadeIn'
 
-const initialForm = { name: '', email: '', subject: '', message: '' }
+const initialForm = { name: '', email: '', subject: '', message: '', honeypot: '' }
 const MAX_MSG = 2000
 
 function Confetti({ active }) {
@@ -143,6 +143,17 @@ export default function Contact() {
 
           {/* Contact Form */}
           <form className="contact-form" onSubmit={handleSubmit} noValidate id="contact-form">
+            <div style={{ display: 'none' }} aria-hidden="true">
+              <label htmlFor="contact-honeypot">Leave this field empty</label>
+              <input
+                id="contact-honeypot"
+                name="honeypot"
+                type="text"
+                value={form.honeypot}
+                onChange={handleChange}
+                tabIndex="-1"
+              />
+            </div>
             <div className="form-row">
               <div className="form-group">
                 <label className="form-label" htmlFor="contact-name">Name *</label>

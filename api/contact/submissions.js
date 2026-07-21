@@ -1,54 +1,33 @@
 const { connect } = require('../_db')
 const Contact = require('../models/contact')
-const crypto = require('crypto')
+const security = require('../../shared/security')
 
-const ALLOWED_ORIGINS = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://saisanthoshborra.vercel.app',
-  'https://portfolio-saisanthu07s-projects.vercel.app'
-]
+// Simple in-memory rate limiter for serverless
+const rateLimitMap = new Map()
+const WINDOW_MS = 15 * 60 * 1000 // 15 minutes
+const MAX_REQUESTS = 100
 
-function getCorsOrigin(req) {
-  const origin = req.headers.origin
-  if (!origin) return 'https://saisanthoshborra.vercel.app'
-  
-  if (ALLOWED_ORIGINS.includes(origin)) return origin
-  
-  // Allow custom Vercel preview domains safely
-  if (/^https:\/\/portfolio-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) {
-    return origin
+function checkRateLimit(ip) {
+  const now = Date.now()
+  const key = ip || 'unknown'
+  const record = rateLimitMap.get(key)
+
+  if (!record || now - record.windowStart > WINDOW_MS) {
+    rateLimitMap.set(key, { count: 1, windowStart: now })
+    return true
   }
-  
-  return 'https://saisanthoshborra.vercel.app'
+
+  if (record.count >= MAX_REQUESTS) return false
+
+  record.count++
+  return true
 }
 
 function setSecurityHeaders(req, res) {
-  const origin = getCorsOrigin(req)
-  res.setHeader('Access-Control-Allow-Origin', origin)
+  const origin = security.getCorsOrigin(req)
+  security.setSecurityHeaders(res, origin)
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key')
-  
-  // Security Headers (Helmet Equivalent)
-  res.setHeader('X-Content-Type-Options', 'nosniff')
-  res.setHeader('X-Frame-Options', 'DENY')
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
-  res.setHeader('X-XSS-Protection', '1; mode=block')
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; sandbox; base-uri 'none';")
-}
-
-function timingSafeCompare(input, secret) {
-  if (!secret || secret.length < 8) {
-    // Fail closed if the secret key is unset or too short to be secure
-    return false
-  }
-  if (typeof input !== 'string') return false
-  
-  const inputHash = crypto.createHash('sha256').update(input).digest()
-  const secretHash = crypto.createHash('sha256').update(secret).digest()
-  
-  return crypto.timingSafeEqual(inputHash, secretHash)
 }
 
 module.exports = async (req, res) => {
@@ -62,15 +41,16 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // Failsafe configuration guard
-  if (!process.env.ADMIN_KEY || process.env.ADMIN_KEY.length < 8) {
-    console.error('❌ Configuration Guard: ADMIN_KEY environment variable is unset or weaker than 8 characters.')
-    return res.status(500).json({ error: 'Authentication engine misconfigured.' })
+  // Rate limiting
+  const clientIp = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.connection?.remoteAddress || 'unknown'
+  if (!checkRateLimit(clientIp)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again after 15 minutes.' })
   }
 
-  const adminKey = req.headers['x-admin-key']
-  if (!adminKey || !timingSafeCompare(adminKey, process.env.ADMIN_KEY)) {
-    return res.status(401).json({ error: 'Unauthorized' })
+  // Failsafe configuration guard and admin key check
+  const validation = security.validateAdminKey(req, process.env.ADMIN_KEY)
+  if (!validation.valid) {
+    return res.status(validation.status).json({ error: validation.error })
   }
 
   try {
