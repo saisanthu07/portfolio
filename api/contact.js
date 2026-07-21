@@ -115,7 +115,6 @@ module.exports = async (req, res) => {
     return res.status(503).json({ error: 'Service temporarily unavailable. Please try again later.' })
   }
 
-  const { name, email, subject, message } = req.body
 
   try {
     const contact = await Contact.create({
