@@ -15,11 +15,10 @@ export default function AdminDashboard({ onNavigate }) {
   const [totalPages, setTotalPages] = useState(1)
   const limit = 20
 
-  // Session Storage Auth check on load
+  // Auth check on pagination change if already authenticated
   useEffect(() => {
-    const savedKey = sessionStorage.getItem('portfolio_admin_key')
-    if (savedKey) {
-      verifyAndFetch(savedKey)
+    if (isAuthenticated && adminKey) {
+      verifyAndFetch(adminKey)
     }
   }, [page])
 
@@ -47,7 +46,6 @@ export default function AdminDashboard({ onNavigate }) {
       setSubmissions(data.contacts || [])
       setTotalPages(data.pages || 1)
       setIsAuthenticated(true)
-      sessionStorage.setItem('portfolio_admin_key', keyToVerify)
       
       // Calculate Stats
       const totalCount = data.total || 0
@@ -69,7 +67,6 @@ export default function AdminDashboard({ onNavigate }) {
     } catch (err) {
       setError(err.message)
       setIsAuthenticated(false)
-      sessionStorage.removeItem('portfolio_admin_key')
     } finally {
       setLoading(false)
     }
@@ -85,7 +82,6 @@ export default function AdminDashboard({ onNavigate }) {
   }
 
   const handleLogout = () => {
-    sessionStorage.removeItem('portfolio_admin_key')
     setIsAuthenticated(false)
     setAdminKey('')
     setSubmissions([])

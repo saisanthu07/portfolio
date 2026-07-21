@@ -105,7 +105,9 @@ export default function App() {
     window.scrollTo(0, 0)
   }
 
+  const isHome = currentPath === '/'
   const isAdmin = currentPath === '/admin'
+  const is404 = !isHome && !isAdmin
 
   return (
     <>
@@ -115,12 +117,27 @@ export default function App() {
       <div className="blob blob-2" />
       <div className="blob blob-3" />
 
-      {isAdmin ? (
+      {is404 ? (
+        <div className="admin-lock-screen">
+          <div className="admin-lock-card" style={{ textAlign: 'center' }}>
+            <h2>404 - Page Not Found</h2>
+            <p className="lock-subtitle">The page you are looking for doesn't exist.</p>
+            <button 
+              onClick={() => handleNavigate('/')} 
+              className="btn-primary"
+              style={{ marginTop: '20px' }}
+            >
+              Go Home
+            </button>
+          </div>
+        </div>
+      ) : isAdmin ? (
         <AdminDashboard onNavigate={handleNavigate} />
       ) : (
         <>
+          <a href="#main-content" className="skip-link">Skip to main content</a>
           <Navbar />
-          <main>
+          <main id="main-content">
             <Hero />
             <About />
             <Education />

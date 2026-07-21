@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer')
 const rateLimit = require('express-rate-limit')
 const { body, validationResult } = require('express-validator')
 const crypto = require('crypto')
+const security = require('../shared/security')
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -14,21 +15,14 @@ const PORT = process.env.PORT || 5001
 // ─── Security & CORS Middleware ───────────────────────────────────────────────
 app.use(express.json())
 
-const ALLOWED_ORIGINS = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://saisanthoshborra.vercel.app',
-  'https://portfolio-saisanthu07s-projects.vercel.app'
-]
+const ALLOWED_ORIGINS = security.ALLOWED_ORIGINS
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like server-to-server or test setups)
-    if (!origin) return callback(null, true)
-    if (ALLOWED_ORIGINS.includes(origin) || /^https:\/\/portfolio-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) {
+    if (security.isValidOrigin(origin)) {
       return callback(null, true)
     }
-    return callback(null, 'https://saisanthoshborra.vercel.app')
+    return callback(new Error('Not allowed by CORS'))
   },
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'x-admin-key'],
@@ -37,12 +31,7 @@ app.use(cors({
 
 // Security Headers Middleware (Helmet parity)
 app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff')
-  res.setHeader('X-Frame-Options', 'DENY')
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
-  res.setHeader('X-XSS-Protection', '1; mode=block')
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; sandbox; base-uri 'none';")
+  security.setSecurityHeaders(res)
   next()
 })
 
@@ -50,6 +39,15 @@ app.use((req, res, next) => {
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
+  message: { error: 'Too many requests. Please try again after 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+})
+
+// Rate limiting — max 100 requests per 15 min per IP for Admin endpoint to prevent brute-forcing
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: { error: 'Too many requests. Please try again after 15 minutes.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -63,17 +61,8 @@ const contactLimiter = rateLimit({
  *
  * @param {string} input - The input string (e.g. admin key header).
  * @param {string} secret - The expected secret string from environment variables.
- * @returns {boolean} True if the hashes match timing-safely, false otherwise.
- */
-function timingSafeCompare(input, secret) {
-  if (!secret || secret.length < 8) return false
-  if (typeof input !== 'string') return false
-  
-  const inputHash = crypto.createHash('sha256').update(input).digest()
-  const secretHash = crypto.createHash('sha256').update(secret).digest()
-  
-  return crypto.timingSafeEqual(inputHash, secretHash)
-}
+// Helper: safe timing comparison to prevent timing side-channel attacks
+const timingSafeCompare = security.timingSafeCompare
 
 /**
  * Sanitizes input text to prevent cross-site scripting (XSS) and database HTML injection attacks.
@@ -82,17 +71,7 @@ function timingSafeCompare(input, secret) {
  * @param {number} [maxLength=2000] - The maximum string length allowed.
  * @returns {string} The escaped and truncated output string.
  */
-function sanitizeInput(str, maxLength = 2000) {
-  if (typeof str !== 'string') return ''
-  return str.trim()
-    .slice(0, maxLength)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;')
-}
+const sanitizeInput = security.sanitizeInput
 
 // ─── MongoDB ───────────────────────────────────────────────────────────────────
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio'
@@ -225,7 +204,15 @@ app.post(
       return res.status(400).json({ error: errors.array()[0].msg })
     }
 
-    const { name, email, subject, message } = req.body
+    const { name, email, subject, message, honeypot } = req.body
+    
+    // Honeypot check for bots
+    if (honeypot) {
+      return res.status(201).json({
+        success: true,
+        message: "Message received! I'll get back to you soon.",
+      })
+    }
 
     try {
       // Save to MongoDB with sanitization to shield against stored injection attacks
@@ -242,8 +229,6 @@ app.post(
         console.error('📧 Email notification failed:', err.message)
       )
 
-      console.log(`📩 New contact from ${contact.name} <${contact.email}>`)
-
       res.status(201).json({
         success: true,
         message: "Message received! I'll get back to you soon.",
@@ -257,16 +242,10 @@ app.post(
 )
 
 // Get all submissions (protected by admin key)
-app.get('/api/contact/submissions', async (req, res) => {
-  // Failsafe configuration guard
-  if (!process.env.ADMIN_KEY || process.env.ADMIN_KEY.length < 8) {
-    console.error('❌ Configuration Guard: ADMIN_KEY environment variable is unset or weaker than 8 characters.')
-    return res.status(500).json({ error: 'Authentication engine misconfigured.' })
-  }
-
-  const adminKey = req.headers['x-admin-key']
-  if (!adminKey || !timingSafeCompare(adminKey, process.env.ADMIN_KEY)) {
-    return res.status(401).json({ error: 'Unauthorized' })
+app.get('/api/contact/submissions', adminLimiter, async (req, res) => {
+  const validation = security.validateAdminKey(req, process.env.ADMIN_KEY)
+  if (!validation.valid) {
+    return res.status(validation.status).json({ error: validation.error })
   }
 
   try {

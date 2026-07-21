@@ -1,6 +1,7 @@
 const { connect } = require('./_db')
 const Contact = require('./models/contact')
 const { sendNotificationEmail } = require('./_mailer')
+const security = require('../shared/security')
 
 // Simple in-memory rate limiter for serverless
 const rateLimitMap = new Map()
@@ -30,49 +31,9 @@ function checkRateLimit(ip) {
   return true
 }
 
-const ALLOWED_ORIGINS = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://saisanthoshborra.vercel.app',
-  'https://portfolio-saisanthu07s-projects.vercel.app'
-]
-
-/**
- * Resolves the correct CORS origin response header value based on the request's origin
- * header and a preconfigured list of allowed origins.
- *
- * @param {import('http').IncomingMessage} req - The HTTP request object.
- * @returns {string} The allowed origin to return in the response headers.
- */
-function getCorsOrigin(req) {
-  const origin = req.headers.origin
-  if (!origin) return 'https://saisanthoshborra.vercel.app'
-  if (ALLOWED_ORIGINS.includes(origin)) return origin
-  if (/^https:\/\/portfolio-[a-zA-Z0-9-]+\.vercel\.app$/.test(origin)) return origin
-  return 'https://saisanthoshborra.vercel.app'
-}
-
-/**
- * Configures the necessary security headers (like HSTS, CSP, CORS headers)
- * on the serverless HTTP response object.
- *
- * @param {import('http').IncomingMessage} req - The HTTP request object.
- * @param {import('http').ServerResponse} res - The HTTP response object.
- * @returns {void}
- */
 function setSecurityHeaders(req, res) {
-  const origin = getCorsOrigin(req)
-  res.setHeader('Access-Control-Allow-Origin', origin)
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-  
-  // Security Headers (Helmet Equivalent)
-  res.setHeader('X-Content-Type-Options', 'nosniff')
-  res.setHeader('X-Frame-Options', 'DENY')
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
-  res.setHeader('X-XSS-Protection', '1; mode=block')
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; sandbox; base-uri 'none';")
+  const origin = security.getCorsOrigin(req)
+  security.setSecurityHeaders(res, origin)
 }
 
 /**
@@ -104,17 +65,7 @@ function validateBody(body) {
  * @param {number} [maxLength=2000] - The maximum length of string allowed.
  * @returns {string} The sanitized and truncated string.
  */
-function sanitizeInput(str, maxLength = 2000) {
-  if (typeof str !== 'string') return ''
-  return str.trim()
-    .slice(0, maxLength)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;')
-}
+const sanitizeInput = security.sanitizeInput
 
 /**
  * Serverless handler for the contact form API submission endpoint.
@@ -147,6 +98,16 @@ module.exports = async (req, res) => {
   const errMsg = validateBody(req.body)
   if (errMsg) return res.status(400).json({ error: errMsg })
 
+  const { name, email, subject, message, honeypot } = req.body
+
+  // Honeypot check for bots
+  if (honeypot) {
+    return res.status(201).json({
+      success: true,
+      message: "Message received! I'll get back to you soon.",
+    })
+  }
+
   try {
     await connect()
   } catch (err) {
@@ -171,8 +132,6 @@ module.exports = async (req, res) => {
     } catch (err) {
       console.error('Email notification failed:', err.message)
     }
-
-    console.log(`📩 New contact from ${contact.name} <${contact.email}>`)
 
     return res.status(201).json({
       success: true,

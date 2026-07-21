@@ -61,18 +61,10 @@ const projects = [
   },
 ]
 
-const FILTERS = [
-  { key: 'all', label: 'All' },
-  { key: 'fullstack', label: 'Full Stack' },
-]
 
 export default function Projects() {
   const [ref, visible] = useFadeIn()
-  const [activeFilter, setActiveFilter] = useState('all')
-
-  const filtered = activeFilter === 'all'
-    ? projects
-    : projects.filter(p => p.category === activeFilter)
+  const filtered = projects
 
   return (
     <section id="projects" ref={ref}>
@@ -80,20 +72,6 @@ export default function Projects() {
         <p className="section-label">Projects</p>
         <h2 className="section-title">Things I've built</h2>
 
-        <div className="project-filters" role="tablist">
-          {FILTERS.map(f => (
-            <button
-              key={f.key}
-              className={`filter-btn${activeFilter === f.key ? ' active' : ''}`}
-              role="tab"
-              aria-selected={activeFilter === f.key}
-              id={`filter-${f.key}`}
-              onClick={() => setActiveFilter(f.key)}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
 
         <div className="projects-grid">
           {filtered.map((p, i) => (
@@ -151,7 +129,7 @@ export default function Projects() {
               <div className="project-visual" aria-hidden="true">
                 <div className="project-visual-inner">
                   {p.image ? (
-                    <img src={p.image} className="project-visual-img" alt={`${p.title} Logo`} />
+                    <img src={p.image} className="project-visual-img" alt={`${p.title} Logo`} loading="lazy" />
                   ) : (
                     <div className="project-visual-icon">{p.emoji}</div>
                   )}

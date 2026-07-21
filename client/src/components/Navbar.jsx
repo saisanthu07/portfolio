@@ -23,6 +23,17 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
+  useEffect(() => {
     const updateActiveSection = () => {
       const navbarOffset = document.querySelector('.navbar')?.offsetHeight || 0
       const scrollPosition = window.scrollY + navbarOffset + 24
