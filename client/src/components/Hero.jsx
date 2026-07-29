@@ -95,7 +95,7 @@ export default function Hero() {
             </p>
 
             <p className="hero-summary">
-              I am a <strong>Full Stack MERN Developer</strong> and <strong>AWS Cloud Engineer</strong> specializing in building scalable, production-ready web applications. From architecting <strong>real-time WebSocket systems</strong> to deploying serverless APIs on AWS (EC2, S3, Lambda), I bridge the gap between robust backend infrastructure and seamless React user experiences.
+              I am a <strong>Full Stack MERN Developer</strong> and <strong>AWS Cloud Engineer</strong> specializing in building scalable, production-ready web applications. From architecting <strong>real-time WebSocket systems</strong> to provisioning AWS infrastructure and web assets (EC2, S3) and deploying serverless APIs (Lambda), I bridge the gap between robust backend infrastructure and seamless React user experiences.
             </p>
 
             <div className="hero-actions">
