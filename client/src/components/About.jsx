@@ -16,9 +16,12 @@ export default function About() {
         <p className="section-label">About Me</p>
         <div className="about-grid">
           <div className={`about-text fade-in${visible ? ' visible' : ''}`}>
-            <h2 className="section-title" style={{ marginBottom: 24 }}>
-              Building things that<br />actually ship.
+            <h2 className="section-title" style={{ marginBottom: 8 }}>
+              Full Stack Web Developer & Cloud Architect
             </h2>
+            <p className="section-subtitle" style={{ marginBottom: 24, fontSize: '1.2rem', fontWeight: 500, color: 'var(--text-secondary, #888)' }}>
+              Building things that actually ship.
+            </p>
             <p>
               I'm a <strong>Computer Science (AI)</strong> student at Parul University,
               Vadodara, graduating May 2027. I specialize in the MERN stack and have
