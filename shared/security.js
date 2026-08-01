@@ -34,9 +34,9 @@ function setSecurityHeaders(res, origin) {
   res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; sandbox; base-uri 'none';")
 }
 
-function sanitizeInput(str, maxLength = 2000) {
+function sanitizeInput(str, maxLength = 2000, stripNewlines = false) {
   if (typeof str !== 'string') return ''
-  return str.trim()
+  let sanitized = str.trim()
     .slice(0, maxLength)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -44,10 +44,15 @@ function sanitizeInput(str, maxLength = 2000) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')
     .replace(/\//g, '&#x2F;')
+    
+  if (stripNewlines) {
+    sanitized = sanitized.replace(/[\r\n]/g, '')
+  }
+  return sanitized
 }
 
 function timingSafeCompare(input, secret) {
-  if (!secret || secret.length < 8) return false
+  if (!secret || secret.length < 20) return false
   if (typeof input !== 'string') return false
   
   const inputHash = crypto.createHash('sha256').update(input).digest()
@@ -57,8 +62,8 @@ function timingSafeCompare(input, secret) {
 }
 
 function validateAdminKey(req, envKey) {
-  if (!envKey || envKey.length < 8) {
-    console.error('❌ Configuration Guard: ADMIN_KEY environment variable is unset or weaker than 8 characters.')
+  if (!envKey || envKey.length < 20) {
+    console.error('❌ Configuration Guard: ADMIN_KEY environment variable is unset or weaker than 20 characters.')
     return { valid: false, error: 'Authentication engine misconfigured.', status: 500 }
   }
   const adminKey = req.headers['x-admin-key']

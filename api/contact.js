@@ -118,9 +118,9 @@ module.exports = async (req, res) => {
 
   try {
     const contact = await Contact.create({
-      name: sanitizeInput(name, 100),
+      name: sanitizeInput(name, 100, true),
       email: email.toLowerCase().trim(),
-      subject: subject ? sanitizeInput(subject, 200) : 'No Subject',
+      subject: subject ? sanitizeInput(subject, 200, true) : 'No Subject',
       message: sanitizeInput(message, 2000),
       ip: clientIp,
     })

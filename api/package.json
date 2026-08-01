@@ -4,6 +4,6 @@
   "description": "Vercel serverless API functions for portfolio",
   "dependencies": {
     "mongoose": "^8.0.3",
-    "nodemailer": "^6.9.8"
+    "nodemailer": "^9.0.3"
   }
 }
