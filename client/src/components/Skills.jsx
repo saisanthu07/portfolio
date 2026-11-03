@@ -5,50 +5,50 @@ const categories = [
     icon: '⚡',
     name: 'Languages',
     color: '#ff9f0a', // iOS Orange
-    span: 'wide',
-    skills: ['JavaScript', 'Python', 'SQL', 'Java'],
+    span: 'normal',
+    skills: ['JavaScript', 'Java', 'SQL'],
   },
   {
     icon: '🧩',
     name: 'Frameworks & Libraries',
     color: '#64d2ff', // iOS Teal
     span: 'wide',
-    skills: ['React.js', 'Node.js', 'Express.js', 'Socket.io', 'WebSockets'],
+    skills: ['React.js', 'Next.js', 'Node.js', 'Express.js', 'Socket.io', 'WebRTC', 'Zod'],
+  },
+  {
+    icon: '🤖',
+    name: 'AI & LLM Integration',
+    color: '#bf5af2', // iOS Purple
+    span: 'wide',
+    skills: ['LLM Integration', 'Claude Code', 'Cursor', 'Antigravity', 'Kiro', 'NVIDIA NIM (LLaMA 3.1)'],
+  },
+  {
+    icon: '☁️',
+    name: 'Cloud & Deployment',
+    color: '#ff9f0a', // iOS Orange
+    span: 'wide',
+    skills: ['AWS (EC2, S3, Lambda, IAM, CloudWatch)', 'Firebase (Cloud Functions v2, Auth)', 'Vercel', 'Render'],
   },
   {
     icon: '🗄️',
     name: 'Databases',
     color: '#30d158', // iOS Green
     span: 'normal',
-    skills: ['MongoDB', 'MongoDB Atlas', 'MySQL'],
-  },
-  {
-    icon: '☁️',
-    name: 'Cloud — AWS',
-    color: '#ff9f0a', // iOS Orange
-    span: 'normal',
-    skills: ['EC2', 'S3', 'CloudFront', 'Lambda', 'API Gateway', 'IAM', 'Route 53', 'CloudWatch'],
-  },
-  {
-    icon: '🔐',
-    name: 'Auth & Security',
-    color: '#bf5af2', // iOS Purple
-    span: 'normal',
-    skills: ['Clerk Auth', 'JWT', 'bcrypt', 'RBAC', 'CORS', 'HTTPS'],
+    skills: ['MongoDB (NoSQL)', 'Firebase Firestore', 'MySQL'],
   },
   {
     icon: '🛠️',
-    name: 'Tools & Platforms',
+    name: 'Tools & CI/CD',
     color: '#0a84ff', // iOS Blue
     span: 'normal',
-    skills: ['Git', 'GitHub', 'Vercel', 'Render', 'Postman', 'Cloudinary', 'GitHub Actions'],
+    skills: ['GitHub', 'GitHub Actions', 'Postman', 'Git'],
   },
   {
-    icon: '🤖',
-    name: 'AI Integration',
-    color: '#64d2ff', // iOS Teal
-    span: 'normal',
-    skills: ['AI API Integration', 'Prompt Engineering'],
+    icon: '🔐',
+    name: 'Core Concepts & Architecture',
+    color: '#ff375f', // iOS Pink/Red
+    span: 'full',
+    skills: ['REST APIs', 'OAuth 2.0', 'JWT', 'Role-Based Access Control (RBAC)'],
   },
 ]
 

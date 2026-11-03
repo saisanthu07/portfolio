@@ -93,9 +93,9 @@ export default function Contact() {
           <div className="contact-info">
             <h3>Available for opportunities</h3>
             <p>
-              I'm actively looking for full-stack developer or AWS internship roles. Whether
-              you have a project to discuss, a position to fill, or just want to say
-              hello — my inbox is always open.
+              I'm open to software engineering internships and full-time opportunities. Whether
+              you have a project to discuss, a position to fill, or just want to connect —
+              my inbox and phone are always open.
             </p>
 
             <div className="contact-details">
@@ -109,10 +109,19 @@ export default function Contact() {
                 </div>
               </div>
               <div className="contact-item">
+                <div className="contact-item-icon">📱</div>
+                <div className="contact-item-text">
+                  <span className="contact-item-label">Phone</span>
+                  <a className="contact-item-value" href="tel:+918341771451" id="contact-phone-link">
+                    +91 8341771451
+                  </a>
+                </div>
+              </div>
+              <div className="contact-item">
                 <div className="contact-item-icon">📍</div>
                 <div className="contact-item-text">
                   <span className="contact-item-label">Location</span>
-                  <span className="contact-item-value">Amalapuram, Andhra Pradesh · Remote & On-site</span>
+                  <span className="contact-item-value">Amalapuram, Andhra Pradesh, India</span>
                 </div>
               </div>
               <div className="contact-item">

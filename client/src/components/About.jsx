@@ -17,26 +17,22 @@ export default function About() {
         <div className="about-grid">
           <div className={`about-text fade-in${visible ? ' visible' : ''}`}>
             <h2 className="section-title" style={{ marginBottom: 8 }}>
-              Full Stack Web Developer & Cloud Architect
+              Full-Stack Developer & Software Engineer
             </h2>
             <p className="section-subtitle" style={{ marginBottom: 24, fontSize: '1.2rem', fontWeight: 500, color: 'var(--text-secondary, #888)' }}>
               Building things that actually ship.
             </p>
             <p>
-              I'm a <strong>Computer Science (AI)</strong> student at Parul University,
-              Vadodara, graduating May 2027. I specialize in the MERN stack and have
-              hands-on cloud deployment experience with <strong>AWS EC2, S3, CloudFront,
-              and Lambda</strong>.
+              I'm a <strong>Computer Science (Artificial Intelligence)</strong> undergraduate at Parul University, Vadodara (2023 – 2027, <strong>7.46 CGPA</strong>). I specialize in building full-stack applications with <strong>React.js, Next.js, Node.js, Express.js, MongoDB, Firebase, and AWS</strong>.
             </p>
             <p>
-              My approach is simple: I care about the <strong>full journey</strong> — from
-              designing architecture to debugging production CORS errors at 2am. I've
-              shipped <strong>Codesuu</strong>, a real-time collaborative coding platform
-              used by 10+ concurrent teams simultaneously.
+              I have industry experience from my remote <strong>Software Developer internship at Debe Learning</strong>, where I developed a custom WebRTC live video classroom in Next.js 14 and Firebase, automated cron workflows with Firebase Cloud Functions v2 and WhatsApp Cloud API, and integrated Google Meet, Calendar, and Zoom S2S OAuth APIs.
             </p>
             <p>
-              Currently seeking a <strong>full-stack or backend developer role</strong> where
-              I can contribute to scalable systems and grow alongside a strong engineering team.
+              I take pride in architecting production platforms from scratch: from <strong>Codesuu</strong> (a collaborative coding platform featuring real-time multi-cursor editing and 24+ language code execution) to <strong>ShikshaBridge</strong> (an AI-powered learning gap analysis platform with NVIDIA NIM LLaMA 3.1) and <strong>Tasksuu</strong> (a multi-tenant SaaS project management system).
+            </p>
+            <p>
+              Experienced in GitHub collaboration, Agile workflows, and CI/CD pipelines with GitHub Actions. Currently open to software engineering internships and full-time opportunities.
             </p>
             <div className="about-actions">
               <a href="/resume.pdf" download="Sai_Santhosh_Borra_Resume.pdf" className="btn-primary" id="about-resume-btn">
