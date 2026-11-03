@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
+import Experience from './components/Experience'
 import Education from './components/Education'
 import Skills from './components/Skills'
 import Projects from './components/Projects'
@@ -59,7 +60,7 @@ function Footer() {
             <p className="footer-tagline">Building things that actually ship.</p>
           </div>
           <nav className="footer-nav">
-            {[['About', '#about'], ['Skills', '#skills'], ['Projects', '#projects'], ['Contact', '#contact']].map(([label, href]) => (
+            {[['About', '#about'], ['Experience', '#experience'], ['Projects', '#projects'], ['Skills', '#skills'], ['Education', '#education'], ['Contact', '#contact']].map(([label, href]) => (
               <a key={label} href={href} onClick={e => { e.preventDefault(); scrollTo(href) }}>{label}</a>
             ))}
           </nav>
@@ -140,9 +141,10 @@ export default function App() {
           <main id="main-content">
             <Hero />
             <About />
-            <Education />
-            <Skills />
+            <Experience />
             <Projects />
+            <Skills />
+            <Education />
             <Certifications />
             <Contact />
           </main>

@@ -1,23 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 const roles = [
-  'MERN Full-Stack Developer',
-  'AWS Cloud Enthusiast',
-  'CSE (AI) Student',
-  'Open Source Builder',
+  'Full-Stack Developer (MERN & Next.js)',
+  'Software Developer Intern',
+  'CSE (AI) Undergrad',
+  'Real-Time & Cloud Systems Builder',
 ]
 
 const CODE_SNIPPETS = [
-  { code: 'const app = express()', color: '#00d4ff' },
+  { code: 'const rtc = new RTCPeerConnection()', color: '#00d4ff' },
   { code: 'await mongoose.connect(uri)', color: '#7b2fff' },
   { code: 'useEffect(() => {}, [])', color: '#00ff88' },
   { code: 'npm run build', color: '#ffb347' },
   { code: 'git push origin main', color: '#00d4ff' },
-  { code: 'docker build -t app .', color: '#ff6b6b' },
+  { code: 'firebase.functions().httpsCallable()', color: '#ff6b6b' },
   { code: 'aws s3 sync ./dist s3://bucket', color: '#ffb347' },
-  { code: 'const [state, setState]', color: '#7b2fff' },
-  { code: 'socket.emit("update")', color: '#00ff88' },
-  { code: 'SELECT * FROM users', color: '#00d4ff' },
+  { code: 'const [state, setState] = useState()', color: '#7b2fff' },
+  { code: 'socket.emit("code-update", delta)', color: '#00ff88' },
+  { code: 'SELECT * FROM users WHERE role="admin"', color: '#00d4ff' },
 ]
 
 function FloatingCodeSnippet({ snippet, index }) {
@@ -95,7 +95,7 @@ export default function Hero() {
             </p>
 
             <p className="hero-summary">
-              I am a <strong>Full Stack MERN Developer</strong> and <strong>AWS Cloud Engineer</strong> specializing in building scalable, production-ready web applications. From architecting <strong>real-time WebSocket systems</strong> to provisioning AWS infrastructure and web assets (EC2, S3) and deploying serverless APIs (Lambda), I bridge the gap between robust backend infrastructure and seamless React user experiences.
+              Computer Science (AI) undergraduate with hands-on experience building and deploying full-stack <strong>MERN & Next.js</strong> applications, plus industry experience from a remote <strong>Software Developer internship</strong> at <strong>Debe Learning</strong>. Skilled in <strong>React.js, Next.js, Node.js, Express.js, MongoDB, Firebase, and AWS</strong>. Built production-grade platforms featuring <strong>AI/LLM integration</strong>, real-time collaboration (WebSockets, WebRTC), role-based access control (RBAC), and scalable REST APIs.
             </p>
 
             <div className="hero-actions">
